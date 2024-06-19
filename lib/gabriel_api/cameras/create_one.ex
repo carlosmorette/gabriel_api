@@ -10,13 +10,18 @@ defmodule GabrielAPI.Cameras.CreateOne do
           required(:name) => String.t()
         }
 
+  ## TODO: doc + spec
   def run(params) do
-    case Camera.create_changeset(params) do
-      %Ecto.Changeset{valid?: true} = changeset ->
-        Repo.insert(changeset)
-
-      %Ecto.Changeset{} = chst ->
-        Ecto.Changeset.traverse_errors(chst, fn {msg, _opt} -> msg end)
+    with %Ecto.Changeset{valid?: true} = chst <- Camera.create_changeset(params),
+         {:ok, camera} <- Repo.insert(chst) do
+      {:ok, camera}
+    else
+      {:error, %Ecto.Changeset{} = chst} -> {:error, format_errors(chst)}
+      %Ecto.Changeset{} = chst -> {:error, format_errors(chst)}
     end
+  end
+
+  def format_errors(%Ecto.Changeset{} = chst) do
+    Ecto.Changeset.traverse_errors(chst, fn {msg, _opt} -> msg end)
   end
 end
