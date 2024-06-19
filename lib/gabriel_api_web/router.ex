@@ -21,9 +21,13 @@ defmodule GabrielAPIWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GabrielAPIWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", GabrielAPIWeb do
+    pipe_through :api
+
+    post "/camera", CameraController, :create
+    patch "/camera", CameraController, :disable
+    get "/camera", CameraController, :list
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:gabriel_api, :dev_routes) do
