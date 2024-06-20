@@ -5,6 +5,8 @@ defmodule GabrielAPI.Cameras.Entities.Customer do
 
   schema "customers" do
     field :name, :string
+
+    timestamps()
   end
 
   ## Uso apenas para seeds
