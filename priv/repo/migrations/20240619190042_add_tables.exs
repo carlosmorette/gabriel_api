@@ -20,8 +20,10 @@ defmodule GabrielAPI.Repo.Migrations.AddTables do
     create unique_index(:cameras, :ip)
 
     create table(:alert_logs) do
-      add :occurred_at, :naive_datetime
+      add :occurred_at, :naive_datetime, null: false
       add :camera_id, references(:cameras), null: false
+
+      timestamps()
     end
   end
 end

@@ -28,7 +28,7 @@ defmodule GabrielAPIWeb.Router do
     patch "/camera", CameraController, :disable
     get "/camera", CameraController, :list
     post "/alert_log", AlertLogController, :create
-    get "/alert_log", AlertController, :list
+    get "/alert_log", AlertLogController, :list
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
