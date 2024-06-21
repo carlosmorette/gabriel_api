@@ -15,7 +15,8 @@ defmodule GabrielAPIWeb.AlertLogController do
 
   def list(conn, params) do
     case QueryAlerts.run(params) do
-      {:ok, alerts} -> render(conn, :show, alerts: alerts)
+      {:ok, alerts} ->
+        render(conn, :show, alerts: alerts)
 
       {:error, errors} ->
         conn |> put_status(:bad_request) |> json(%{errors: errors})

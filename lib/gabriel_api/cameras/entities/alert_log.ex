@@ -26,6 +26,7 @@ defmodule GabrielAPI.Cameras.Entities.AlertLog do
   end
 
   defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, %{occurred_at: _occurred_at}), do: chst
+
   defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, _params) do
     put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
   end

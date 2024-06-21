@@ -1,4 +1,9 @@
 defmodule GabrielAPI.Cameras.CreateOne do
+  @moduledoc """
+  Operação responsável por criar um #{Camera} dentro do sistema. Uma câmera obrigatoriamente
+  precisa estar obrigatoriamente associada a um #{Customer}.
+  """
+
   alias GabrielAPI.Repo
   alias GabrielAPI.Cameras.IP.Ecto.Type, as: IPType
   alias GabrielAPI.Cameras.Entities.Camera
@@ -10,7 +15,16 @@ defmodule GabrielAPI.Cameras.CreateOne do
           required(:name) => String.t()
         }
 
-  ## TODO: doc + spec
+  @doc """
+  Exemplos:
+
+        iex> CreateOne.run(%{ip: "192.564.123.0", is_enabled?: true, customer_id: 1, name: "Rua 7"})
+        {:ok, %Camera{}}
+
+        iex> CreateOne.run(%{ip: "192.999.123.0", is_enabled?: true, customer_id: 1, name: "Rua 7"})
+        iex> {:error, %{ip: ["is invalid"]}}
+  """
+  @spec run(params) :: {:ok, Camera.t()} | {:error, map}
   def run(params) do
     with %Ecto.Changeset{valid?: true} = chst <- Camera.create_changeset(params),
          {:ok, camera} <- Repo.insert(chst) do
@@ -21,7 +35,7 @@ defmodule GabrielAPI.Cameras.CreateOne do
     end
   end
 
-  def format_errors(%Ecto.Changeset{} = chst) do
+  defp format_errors(%Ecto.Changeset{} = chst) do
     Ecto.Changeset.traverse_errors(chst, fn {msg, _opt} -> msg end)
   end
 end

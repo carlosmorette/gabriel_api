@@ -24,6 +24,7 @@ defmodule GabrielAPIWeb.CameraController do
 
   def list(conn, query_params) do
     params = %{customer_id: query_params["customer_id"], filters: query_params}
+
     case QueryCameras.run(params) do
       {:ok, cameras} ->
         render(conn, :show, cameras: cameras)

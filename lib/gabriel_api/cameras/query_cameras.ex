@@ -1,4 +1,8 @@
 defmodule GabrielAPI.Cameras.QueryCameras do
+  @moduledoc """
+  Operação responsável por buscar no banco de dados câmeras associadas a um #{Customer}.
+  """
+
   use Params
 
   alias GabrielAPI.Repo
@@ -13,6 +17,19 @@ defmodule GabrielAPI.Cameras.QueryCameras do
     })
   )
 
+  @doc """
+  Exemplos:
+
+      iex> QueryCameras.run(%{customer_id: 1})
+      iex> {:ok, [%Camera{}]}
+
+      iex> QueryCameras.run(%{})
+      iex> {:error, %{customer_id: ["can't be blank"]}}
+
+      iex> QueryCameras.run(%{customer_id: 1, filters: %{is_enabled: true}})
+      iex> {:ok, [%Camera{}, %Camera{}]}
+  """
+  @spec run(map) :: {:ok, list(Camera.t())} | {:error, map}
   def run(params) do
     case query_params(params) do
       %Ecto.Changeset{valid?: true} = chst ->
