@@ -48,9 +48,16 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
     from c in __MODULE__, where: c.id == ^id
   end
 
-  @spec build_filter_query(integer, map) :: Ecto.Query.t()
-  def build_filter_query(customer_id, filters) do
-    initial_query = from c in __MODULE__, where: c.customer_id == ^customer_id
+  @type opts :: [limit: integer, offset: integer]
+
+  @spec build_filter_query(integer, map, opts) :: Ecto.Query.t()
+  def build_filter_query(customer_id, filters, limit: limit, offset: offset) do
+    initial_query =
+      from c in __MODULE__,
+        where: c.customer_id == ^customer_id,
+        order_by: {:desc, :inserted_at},
+        limit: ^limit,
+        offset: ^offset
 
     Enum.reduce(filters, initial_query, fn {key, value}, query ->
       from q in query, where: field(q, ^key) == ^value

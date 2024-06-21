@@ -13,7 +13,9 @@ defmodule GabrielAPI.Cameras.QueryCameras do
       customer_id!: :integer,
       filters: %{
         is_enabled: :boolean
-      }
+      },
+      limit: :integer,
+      offset: :integer
     })
   )
 
@@ -43,9 +45,14 @@ defmodule GabrielAPI.Cameras.QueryCameras do
 
   defp do_query(chst) do
     params = Params.to_map(chst)
+    limit = Map.get(params, :limit, 5)
+    offset = Map.get(params, :offset, 0)
 
-    params.customer_id
-    |> Camera.build_filter_query(params.filters)
-    |> Repo.all()
+    cameras =
+      params.customer_id
+      |> Camera.build_filter_query(params.filters, limit: limit, offset: offset)
+      |> Repo.all()
+
+    %{cameras: cameras, offset: offset + length(cameras)}
   end
 end
