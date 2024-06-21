@@ -36,10 +36,12 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
     |> cast(attrs, [:is_enabled])
   end
 
+  @spec query_one(id: integer) :: Ecto.Query.t()
   def query_one(id: id) do
     from c in __MODULE__, where: c.id == ^id
   end
 
+  @spec build_filter_query(integer, map) :: Ecto.Query.t()
   def build_filter_query(customer_id, filters) do
     initial_query = from c in __MODULE__, where: c.customer_id == ^customer_id
 

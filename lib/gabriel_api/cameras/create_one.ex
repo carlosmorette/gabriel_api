@@ -10,19 +10,19 @@ defmodule GabrielAPI.Cameras.CreateOne do
 
   @type params :: %{
           optional(:ip) => IPType,
-          optional(:is_enabled?) => boolean,
+          optional(:is_enabled) => boolean,
           required(:customer_id) => integer,
           required(:name) => String.t()
         }
 
   @doc """
   Exemplos:
+      iex> alias GabrielAPI.Cameras.CreateOne
+      iex> CreateOne.run(%{ip: "192.564.123.0", is_enabled: true, customer_id: 1, name: "Rua 7"})
+      {:ok, %Camera{}}
 
-        iex> CreateOne.run(%{ip: "192.564.123.0", is_enabled?: true, customer_id: 1, name: "Rua 7"})
-        {:ok, %Camera{}}
-
-        iex> CreateOne.run(%{ip: "192.999.123.0", is_enabled?: true, customer_id: 1, name: "Rua 7"})
-        iex> {:error, %{ip: ["is invalid"]}}
+      iex> CreateOne.run(%{ip: "192.999.123.0", is_enabled: true, customer_id: 1, name: "Rua 7"})
+      iex> {:error, %{ip: ["is invalid"]}}
   """
   @spec run(params) :: {:ok, Camera.t()} | {:error, map}
   def run(params) do

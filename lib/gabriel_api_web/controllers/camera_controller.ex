@@ -3,8 +3,6 @@ defmodule GabrielAPIWeb.CameraController do
 
   alias GabrielAPI.Cameras.{CreateOne, Disable, QueryCameras}
 
-  @default_error "unexpected_error"
-
   def create(conn, params) do
     case CreateOne.run(params) do
       {:ok, _camera} ->

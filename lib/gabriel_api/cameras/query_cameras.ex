@@ -20,6 +20,7 @@ defmodule GabrielAPI.Cameras.QueryCameras do
   @doc """
   Exemplos:
 
+      iex> alias GabrielAPI.Cameras.QueryCamera
       iex> QueryCameras.run(%{customer_id: 1})
       iex> {:ok, [%Camera{}]}
 

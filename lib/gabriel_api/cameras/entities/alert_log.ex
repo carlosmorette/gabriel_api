@@ -18,6 +18,7 @@ defmodule GabrielAPI.Cameras.Entities.AlertLog do
     timestamps()
   end
 
+  @spec create_changeset(map) :: Ecto.Changeset.t()
   def create_changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, @fields)
@@ -31,6 +32,7 @@ defmodule GabrielAPI.Cameras.Entities.AlertLog do
     put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
   end
 
+  @spec build_filter_query(map) :: Ecto.Query.t()
   def build_filter_query(filters) do
     initial_query = __MODULE__
 
