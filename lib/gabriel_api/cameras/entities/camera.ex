@@ -25,9 +25,16 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
   def create_changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, @fields)
-    |> validate_required([:name, :customer_id, :ip])
+    |> validate_required([:customer_id, :ip])
     |> foreign_key_constraint(:customer_id)
     |> unique_constraint(:ip)
+    |> maybe_put_name(attrs)
+  end
+
+  defp maybe_put_name(%Ecto.Changeset{} = chst, %{name: _name}), do: chst
+
+  defp maybe_put_name(%Ecto.Changeset{} = chst, _attrs) do
+    put_change(chst, :name, Ecto.UUID.generate())
   end
 
   @spec update_changeset(__MODULE__.t(), map) :: Ecto.Changeset.t()

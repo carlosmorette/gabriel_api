@@ -12,7 +12,7 @@ defmodule GabrielAPI.Cameras.CreateOne do
           optional(:ip) => IPType,
           optional(:is_enabled) => boolean,
           required(:customer_id) => integer,
-          required(:name) => String.t()
+          optional(:name) => String.t()
         }
 
   @doc """

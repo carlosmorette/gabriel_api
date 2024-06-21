@@ -11,7 +11,7 @@ defmodule GabrielAPI.Cameras.Disable do
           required(:camera_id) => integer
         }
 
-  @moduledoc """
+  @doc """
   Exemplos:
 
         iex> alias GabrielAPI.Cameras.Disable

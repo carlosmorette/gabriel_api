@@ -14,7 +14,7 @@ defmodule GabrielAPI.Cameras.CreateAlertLog do
           optional(:occurred_at) => :naive_datetime
         }
 
-  @moduledoc """
+  @doc """
   Caso o campo `occurred_at` não seja passado, o valor default é o momento atual.
 
   Exemplos:
