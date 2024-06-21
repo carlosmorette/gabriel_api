@@ -28,13 +28,15 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
     |> validate_required([:customer_id, :ip])
     |> foreign_key_constraint(:customer_id)
     |> unique_constraint(:ip)
-    |> maybe_put_name(attrs)
+    |> maybe_put_name()
   end
 
-  defp maybe_put_name(%Ecto.Changeset{} = chst, %{name: _name}), do: chst
-
-  defp maybe_put_name(%Ecto.Changeset{} = chst, _attrs) do
-    put_change(chst, :name, Ecto.UUID.generate())
+  defp maybe_put_name(%Ecto.Changeset{} = chst) do
+    if Map.has_key?(chst.changes, :name) do
+      chst
+    else
+      put_change(chst, :name, Ecto.UUID.generate())
+    end
   end
 
   @spec update_changeset(__MODULE__.t(), map) :: Ecto.Changeset.t()

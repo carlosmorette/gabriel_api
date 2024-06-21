@@ -3,8 +3,8 @@ defmodule GabrielAPIWeb.AlertLogController do
 
   alias GabrielAPI.Cameras.{CreateAlertLog, QueryAlerts}
 
-  def create(conn, params) do
-    case CreateAlertLog.run(params) do
+  def create(conn, body_params) do
+    case CreateAlertLog.run(body_params) do
       {:ok, _alert} ->
         send_resp(conn, :created, "")
 

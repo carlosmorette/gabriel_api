@@ -1,8 +1,8 @@
 defmodule GabrielAPI.Cameras.QueryAlertsTest do
+  use ExUnit.Case, async: true
   alias GabrielAPI.Cameras.Entities.AlertLog
   alias GabrielAPI.Cameras.CreateAlertLog
   alias GabrielAPI.Cameras.QueryAlerts
-  use ExUnit.Case
 
   import GabrielAPI.Factory
 

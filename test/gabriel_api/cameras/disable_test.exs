@@ -1,5 +1,5 @@
 defmodule GabrielAPI.Cameras.DisableTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import GabrielAPI.Factory
 
   alias GabrielAPI.Cameras.Disable

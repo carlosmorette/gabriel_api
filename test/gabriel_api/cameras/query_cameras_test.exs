@@ -1,5 +1,5 @@
 defmodule GabrielAPI.Cameras.QueryCamerasTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   import GabrielAPI.Factory
 

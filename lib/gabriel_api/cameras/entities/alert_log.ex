@@ -23,13 +23,15 @@ defmodule GabrielAPI.Cameras.Entities.AlertLog do
     %__MODULE__{}
     |> cast(attrs, @fields)
     |> validate_required(:camera_id)
-    |> maybe_put_occurred_at(attrs)
+    |> maybe_put_occurred_at()
   end
 
-  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, %{occurred_at: _occurred_at}), do: chst
-
-  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, _attrs) do
-    put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst) do
+    if Map.has_key?(chst.changes, :occurred_at) do
+      chst
+    else
+      put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+    end
   end
 
   @type opts :: [limit: integer, offset: integer]
