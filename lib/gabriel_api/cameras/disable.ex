@@ -22,6 +22,8 @@ defmodule GabrielAPI.Cameras.Disable do
         {:ok, %Camera{is_enabled: false}}
   """
   @spec run(params) :: {:ok, any} | {:error, atom | any}
+  def run(%{camera_id: nil}), do: {:error, :required_camera_id}
+
   def run(%{camera_id: id}) do
     Multi.new()
     |> Multi.one(:find_one, Camera.query_one(id: id))

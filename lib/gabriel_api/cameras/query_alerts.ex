@@ -21,6 +21,22 @@ defmodule GabrielAPI.Cameras.QueryAlerts do
     })
   )
 
+  @type map_result :: %{alerts: list(AlertLog.t()), offset: integer}
+
+  @doc """
+  Exemplos:
+
+      iex> alias GabrielAPI.Cameras.QueryAlerts
+      iex> QueryAlerts.run(%{filters: %{}})
+      iex> {:ok, %{cameras: _cameras}}
+
+      iex> QueryAlerts.run(%{filters: %{datetime: ~N[2024-01-01 00:00:00]}})
+      iex> {:ok, %{cameras: _cameras}}
+
+      iex> QueryAlerts.run(%{filters: %{}, limit: 5})
+      iex> {:ok, %{cameras: _cameras}}
+  """
+  @spec run(map) :: {:ok, map_result()} | {:error, map}
   def run(params) do
     case query_params(params) do
       %Ecto.Changeset{valid?: true} = chst ->

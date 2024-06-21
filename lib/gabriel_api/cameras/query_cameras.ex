@@ -21,20 +21,22 @@ defmodule GabrielAPI.Cameras.QueryCameras do
     })
   )
 
+  @type map_result :: %{cameras: list(Camera.t()), offset: integer}
+
   @doc """
   Exemplos:
 
-      iex> alias GabrielAPI.Cameras.QueryCamera
+      iex> alias GabrielAPI.Cameras.QueryCameras
       iex> QueryCameras.run(%{customer_id: 1})
-      iex> {:ok, [%Camera{}]}
+      iex> {:ok, %{cameras: [%Camera{}]}}
 
       iex> QueryCameras.run(%{})
       iex> {:error, %{customer_id: ["can't be blank"]}}
 
       iex> QueryCameras.run(%{customer_id: 1, filters: %{is_enabled: true}})
-      iex> {:ok, [%Camera{}, %Camera{}]}
+      iex> {:ok, %{cameras: [%Camera{}, %Camera{}]}}
   """
-  @spec run(map) :: {:ok, list(Camera.t())} | {:error, map}
+  @spec run(map) :: {:ok, map_result} | {:error, map}
   def run(params) do
     case query_params(params) do
       %Ecto.Changeset{valid?: true} = chst ->
