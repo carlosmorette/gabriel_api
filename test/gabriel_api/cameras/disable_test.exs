@@ -1,7 +1,9 @@
 defmodule GabrielAPI.Cameras.DisableTest do
   use ExUnit.Case
+  import GabrielAPI.Factory
 
   alias GabrielAPI.Cameras.Disable
+  alias GabrielAPI.Cameras.Entities.Camera
 
   setup do
     Ecto.Adapters.SQL.Sandbox.mode(GabrielAPI.Repo, {:shared, self()})
@@ -15,7 +17,7 @@ defmodule GabrielAPI.Cameras.DisableTest do
   describe "run/1" do
     test "it should disable the camera", %{camera: camera} do
       assert camera.is_enabled
-      assert {:ok, %Disable{is_enabled: false}} = Disable.run(%{camera_id: camera_id})
+      assert {:ok, %Camera{is_enabled: false}} = Disable.run(%{camera_id: camera.id})
     end
 
     test "it should return an error when camera not found" do

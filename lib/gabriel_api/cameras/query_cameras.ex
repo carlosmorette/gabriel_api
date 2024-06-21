@@ -8,10 +8,12 @@ defmodule GabrielAPI.Cameras.QueryCameras do
   alias GabrielAPI.Repo
   alias GabrielAPI.Cameras.Entities.Camera
 
+  @default_limit 5
+
   defparams(
     query_params(%{
       customer_id!: :integer,
-      filters: %{
+      filters!: %{
         is_enabled: :boolean
       },
       limit: :integer,
@@ -45,7 +47,7 @@ defmodule GabrielAPI.Cameras.QueryCameras do
 
   defp do_query(chst) do
     params = Params.to_map(chst)
-    limit = Map.get(params, :limit, 5)
+    limit = Map.get(params, :limit, @default_limit)
     offset = Map.get(params, :offset, 0)
 
     cameras =

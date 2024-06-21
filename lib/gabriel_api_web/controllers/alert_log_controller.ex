@@ -13,7 +13,13 @@ defmodule GabrielAPIWeb.AlertLogController do
     end
   end
 
-  def list(conn, params) do
+  def list(conn, query_params) do
+    params = %{
+      filters: query_params,
+      limit: query_params["limit"],
+      offset: query_params["offset"]
+    }
+
     case QueryAlerts.run(params) do
       {:ok, alerts} ->
         render(conn, :show, alerts: alerts)
