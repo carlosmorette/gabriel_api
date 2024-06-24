@@ -3,8 +3,6 @@ defmodule GabrielAPIWeb.Plugs.Authentication do
 
   import Phoenix.Controller
 
-  @api_key Application.compile_env!(:gabriel_api, :api_key)
-
   @api_key_header "x-api-key"
   @unauthorized_error "No access to this resource. Contact development team"
 
@@ -16,7 +14,7 @@ defmodule GabrielAPIWeb.Plugs.Authentication do
         conn |> json(%{error: @unauthorized_error}) |> halt()
 
       [key] ->
-        if key == @api_key do
+        if Application.get_env(:gabriel_api, :api_key) == key do
           conn
         else
           conn |> json(%{error: @unauthorized_error}) |> halt()
