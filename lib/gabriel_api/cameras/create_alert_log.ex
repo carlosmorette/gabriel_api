@@ -25,7 +25,7 @@ defmodule GabrielAPI.Cameras.CreateAlertLog do
       iex> CreateAlertLog.run(%{})
       {:error, %{camera_id: ["can't be blank]}}
   """
-  @spec run(params) :: {:ok, Alert.t()} | {:error, map}
+  @spec run(params) :: {:ok, AlertLog.t()} | {:error, map}
   def run(params) do
     case AlertLog.create_changeset(params) do
       %Ecto.Changeset{valid?: true} = chst ->

@@ -23,7 +23,7 @@ config :gabriel_api, GabrielAPIWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
-  debug_errors: true,
+  debug_errors: false,
   secret_key_base: "SVS+vpfoztBP5SNUOFV27XN9i8leMIMQBBFvwd6fm+XWic5wzG9SYHVQJ43yMgb0",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},

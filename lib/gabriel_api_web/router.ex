@@ -1,6 +1,8 @@
 defmodule GabrielAPIWeb.Router do
   use GabrielAPIWeb, :router
 
+  alias GabrielAPIWeb.Plugs.Authentication
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -12,6 +14,7 @@ defmodule GabrielAPIWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Authentication
   end
 
   scope "/", GabrielAPIWeb do
