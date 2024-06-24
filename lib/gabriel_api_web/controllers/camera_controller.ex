@@ -3,8 +3,6 @@ defmodule GabrielAPIWeb.CameraController do
 
   alias GabrielAPI.Cameras.{CreateOne, Disable, QueryCameras}
 
-  @default_error "unexpected_error"
-
   def create(conn, params) do
     case CreateOne.run(params) do
       {:ok, _camera} ->
@@ -18,15 +16,16 @@ defmodule GabrielAPIWeb.CameraController do
   def disable(conn, params) do
     case Disable.run(%{camera_id: params["camera_id"]}) do
       {:ok, _result} -> send_resp(conn, :no_content, "")
-      {:error, error} -> conn |> put_status(:bad_request) |> json(%{errors: error})
+      {:error, error} -> conn |> put_status(:bad_request) |> json(%{error: error})
     end
   end
 
   def list(conn, query_params) do
     params = %{customer_id: query_params["customer_id"], filters: query_params}
+
     case QueryCameras.run(params) do
-      {:ok, cameras} ->
-        render(conn, :show, cameras: cameras)
+      {:ok, %{cameras: cameras, offset: offset}} ->
+        render(conn, :show, cameras: cameras, offset: offset)
 
       {:error, errors} ->
         conn |> put_status(:bad_request) |> json(%{error: errors})

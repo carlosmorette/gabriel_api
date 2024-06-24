@@ -1,6 +1,9 @@
 defmodule GabrielAPIWeb.CameraJSON do
-  def show(%{cameras: cameras}) do
-    %{cameras: for(c <- cameras, do: data(c))}
+  def show(%{cameras: cameras, offset: offset}) do
+    %{
+      cameras: for(c <- cameras, do: data(c)),
+      offset: offset
+    }
   end
 
   def data(camera) do

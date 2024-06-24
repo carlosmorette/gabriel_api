@@ -1,4 +1,8 @@
 defmodule GabrielAPI.Cameras.Disable do
+  @moduledoc """
+  Operação responsável por desabilitar uma #{Camera}
+  """
+
   alias GabrielAPI.Cameras.Entities.Camera
   alias GabrielAPI.Repo
   alias Ecto.Multi
@@ -7,7 +11,19 @@ defmodule GabrielAPI.Cameras.Disable do
           required(:camera_id) => integer
         }
 
+  @doc """
+  Exemplos:
+
+        iex> alias GabrielAPI.Cameras.Disable
+        iex> Disable.run(%{camera_id: 999999})
+        {:error, :camera_not_found}
+
+        iex> Disable.run(%{camera_id: 1})
+        {:ok, %Camera{is_enabled: false}}
+  """
   @spec run(params) :: {:ok, any} | {:error, atom | any}
+  def run(%{camera_id: nil}), do: {:error, :required_camera_id}
+
   def run(%{camera_id: id}) do
     Multi.new()
     |> Multi.one(:find_one, Camera.query_one(id: id))

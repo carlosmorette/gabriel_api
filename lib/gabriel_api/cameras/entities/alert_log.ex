@@ -18,20 +18,31 @@ defmodule GabrielAPI.Cameras.Entities.AlertLog do
     timestamps()
   end
 
+  @spec create_changeset(map) :: Ecto.Changeset.t()
   def create_changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, @fields)
     |> validate_required(:camera_id)
-    |> maybe_put_occurred_at(attrs)
+    |> maybe_put_occurred_at()
   end
 
-  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, %{occurred_at: _occurred_at}), do: chst
-  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst, _params) do
-    put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+  defp maybe_put_occurred_at(%Ecto.Changeset{} = chst) do
+    if Map.has_key?(chst.changes, :occurred_at) do
+      chst
+    else
+      put_change(chst, :occurred_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+    end
   end
 
-  def build_filter_query(filters) do
-    initial_query = __MODULE__
+  @type opts :: [limit: integer, offset: integer]
+
+  @spec build_filter_query(map, opts) :: Ecto.Query.t()
+  def build_filter_query(filters, limit: limit, offset: offset) do
+    initial_query =
+      from a in __MODULE__,
+        order_by: {:desc, :occurred_at},
+        limit: ^limit,
+        offset: ^offset
 
     Enum.reduce(filters, initial_query, fn
       {:customer_id, id}, query ->

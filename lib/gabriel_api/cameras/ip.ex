@@ -12,6 +12,21 @@ defmodule GabrielAPI.Cameras.IP do
   @max_ip_number 255
   @min_ip_number 0
 
+  @doc """
+  Exemplos:
+
+    iex> GabrielAPI.Cameras.IP.is_valid?("192.168.0.1")
+    true
+
+    iex> GabrielAPI.Cameras.IP.is_valid?("0.0.0.0")
+    true
+
+    iex> GabrielAPI.Cameras.IP.is_valid?("256.0.0.0")
+    false
+
+    iex> GabrielAPI.Cameras.IP.is_valid?("1.1.3")
+    false
+  """
   @spec is_valid?(String.t()) :: boolean()
   def is_valid?(ip) when is_binary(ip) do
     splitted = String.split(ip, @sepator)

@@ -25,9 +25,18 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
   def create_changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, @fields)
-    |> validate_required([:name, :customer_id, :ip])
+    |> validate_required([:customer_id, :ip])
     |> foreign_key_constraint(:customer_id)
     |> unique_constraint(:ip)
+    |> maybe_put_name()
+  end
+
+  defp maybe_put_name(%Ecto.Changeset{} = chst) do
+    if Map.has_key?(chst.changes, :name) do
+      chst
+    else
+      put_change(chst, :name, Ecto.UUID.generate())
+    end
   end
 
   @spec update_changeset(__MODULE__.t(), map) :: Ecto.Changeset.t()
@@ -36,12 +45,21 @@ defmodule GabrielAPI.Cameras.Entities.Camera do
     |> cast(attrs, [:is_enabled])
   end
 
+  @spec query_one(id: integer) :: Ecto.Query.t()
   def query_one(id: id) do
     from c in __MODULE__, where: c.id == ^id
   end
 
-  def build_filter_query(customer_id, filters) do
-    initial_query = from c in __MODULE__, where: c.customer_id == ^customer_id
+  @type opts :: [limit: integer, offset: integer]
+
+  @spec build_filter_query(integer, map, opts) :: Ecto.Query.t()
+  def build_filter_query(customer_id, filters, limit: limit, offset: offset) do
+    initial_query =
+      from c in __MODULE__,
+        where: c.customer_id == ^customer_id,
+        order_by: {:desc, :inserted_at},
+        limit: ^limit,
+        offset: ^offset
 
     Enum.reduce(filters, initial_query, fn {key, value}, query ->
       from q in query, where: field(q, ^key) == ^value
