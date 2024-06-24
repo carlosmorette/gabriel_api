@@ -1,5 +1,7 @@
 import Config
 
+config :gabriel_api, :environment, :dev
+
 # Configure your database
 config :gabriel_api, GabrielAPI.Repo,
   username: System.get_env("POSTGRES_USER"),

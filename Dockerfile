@@ -8,6 +8,7 @@ COPY config config
 COPY lib lib
 COPY scripts scripts
 COPY priv priv
+COPY test test
 
 RUN mix do deps.get, deps.compile, compile
 

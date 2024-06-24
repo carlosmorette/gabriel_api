@@ -27,7 +27,8 @@ cameras =
       customer_id: c.id
     }
 
-    CreateOne.run(%{ip: data})
+    {:ok, camera} = CreateOne.run(data)
+    camera
   end
 
 alerts =
@@ -49,12 +50,15 @@ alerts =
         random_second
       )
 
-    CreateAlertLog.run(%{camera_id: c.id})
+    {:ok, log_1} = CreateAlertLog.run(%{camera_id: c.id})
 
-    CreateAlertLog.run(%{
-      camera_id: c.id,
-      occurred_at: occurred_at
-    })
+    {:ok, log_2} =
+      CreateAlertLog.run(%{
+        camera_id: c.id,
+        occurred_at: occurred_at
+      })
+
+    {log_1, log_2}
   end
 
 IO.puts("[SEEDS] Created #{length(customers)} customers!")
@@ -73,9 +77,13 @@ end
 
 IO.puts("[SEEDS] Created #{length(alerts)} alerts!")
 
-for a <- alerts do
+for {log_1, log_2} <- alerts do
   IO.puts(
-    "alert_log -> ID: #{a.id}, OccurredAt: #{inspect(a.occurred_at)}, CameraID: #{a.camera_id}"
+    "alert_log_1 -> ID: #{log_1.id}, OccurredAt: #{inspect(log_1.occurred_at)}, CameraID: #{log_1.camera_id}"
+  )
+
+  IO.puts(
+    "alert_log_1 -> ID: #{log_2.id}, OccurredAt: #{inspect(log_2.occurred_at)}, CameraID: #{log_2.camera_id}"
   )
 end
 

@@ -1,15 +1,18 @@
 import Config
 
+config :gabriel_api, :environment, :test
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :gabriel_api, GabrielAPI.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  hostname: System.get_env("POSTGRES_HOST"),
   database: "gabriel_api_test#{System.get_env("MIX_TEST_PARTITION")}",
+  port: System.get_env("POSTGRES_PORT"),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
