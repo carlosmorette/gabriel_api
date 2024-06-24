@@ -48,3 +48,6 @@ Para rodar os testes, siga os seguintes passos
 Finished in 0.08 seconds (0.08s async, 0.00s sync)
 29 tests, 0 failures
 ```
+
+## Observação
+Foi incluído o arquivo `dev.env` no tracking do Git, porém em um cenário real ele não subiria junto. O mesmo foi incluído apenas para agilizar os testes do time da Gabriel.
